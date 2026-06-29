@@ -153,19 +153,21 @@ function speak(text) {
     if (state.voice) u.voice = state.voice;
     u.rate = 0.95; u.pitch = 1.0;
 
-    // word-by-word: light the caption + open the mouth
-    let wi = 0; let mouthTick = null;
+    // Continuous mouth "flap" while speaking — works even if the voice
+    // never reports word boundaries (drives the 3D jaw).
+    const flap = setInterval(function () {
+      InterviewAvatar.mouth(0.25 + Math.random() * 0.65);
+    }, 110);
+
+    // onboundary (when available) lights up the caption word-by-word.
+    let wi = 0;
     u.onboundary = function (e) {
       if (e.name && e.name !== 'word') return;
       if (words[wi]) words[wi].classList.add('said');
       wi++;
-      // brief mouth pulse per word
-      InterviewAvatar.mouth(0.5 + Math.random() * 0.5);
-      clearTimeout(mouthTick);
-      mouthTick = setTimeout(function () { InterviewAvatar.mouth(0.12); }, 90);
     };
     const done = function () {
-      clearTimeout(mouthTick);
+      clearInterval(flap);
       words.forEach(function (w) { w.classList.add('said'); });
       InterviewAvatar.mouth(0); InterviewAvatar.speaking(false); resolve();
     };
