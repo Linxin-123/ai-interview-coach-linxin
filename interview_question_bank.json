@@ -47,7 +47,7 @@
       "name": "David",
       "title": "Senior Hiring Recruiter",
       "accent": "en-US",
-      "photo": "assets/interviewer_david.jpg",
+      "photo": "interviewer_david.jpg",
       "model": "",
       "blurb": "Warm and encouraging. Great for behavioural narratives and first screens."
     },
@@ -56,7 +56,7 @@
       "name": "Sophia",
       "title": "VP of Product & Strategy",
       "accent": "en-GB",
-      "photo": "assets/interviewer_sophia.jpg",
+      "photo": "interviewer_sophia.jpg",
       "model": "",
       "blurb": "Structured and analytical. Focuses on problem-solving and leadership."
     },
@@ -65,7 +65,7 @@
       "name": "Ethan",
       "title": "AI Infrastructure Lead",
       "accent": "en-AU",
-      "photo": "assets/interviewer_ethan.jpg",
+      "photo": "interviewer_ethan.jpg",
       "model": "",
       "blurb": "Technical and friendly. Best for system design and deep dives."
     }
