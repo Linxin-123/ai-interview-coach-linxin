@@ -1,0 +1,6 @@
+{
+  "name": "AI English Interview Coach",
+  "description": "An interactive English mock interview application featuring digital human interviewers, 3-round realistic professional scenarios, and real-time encouraging AI evaluations to boost confidence for non-native English speakers.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
