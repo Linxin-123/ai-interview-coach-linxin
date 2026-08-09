@@ -1,5 +1,6 @@
 import { AnsweredQuestion, ComprehensiveEvaluation } from '../types';
 
+//  Constants and small helpers - The word lists and the two utility functions every calculation below depends on.
 const PLACEHOLDERS = ['skipped', '(no speech captured for this answer.)'];
 const FILLERS = ['um', 'uh', 'er', 'ah', 'like', 'you know', 'kind of', 'sort of',
   'basically', 'actually', 'literally', 'i mean', 'so yeah'];
@@ -27,6 +28,7 @@ export interface SpeakingStats {
   relevance: number; // 0..1
 }
 
+// computeStats — gather the raw measurements - Walks through every answer once and accumulates all the raw numbers.
 export function computeStats(answers: AnsweredQuestion[]): SpeakingStats {
   let spokeWords = 0, answeredCount = 0, totalSecs = 0, fillerCount = 0;
   let confSum = 0, confCount = 0, relSum = 0, relCount = 0;
@@ -134,7 +136,8 @@ export function buildLocalEvaluation(answers: AnsweredQuestion[]): Comprehensive
     : s.relevance >= 0.25
     ? "You mostly stayed on topic. Echo a key word from the question in your first sentence so the link is unmistakable."
     : "Some answers drifted from the question. Start by restating the ask (\"You're asking how I'd handle X — here's my approach…\") to lock in relevance.";
-
+  
+// Assemble the final report object - Averages the three scores and packages everything into the ComprehensiveEvaluation shape.
   const overall = Math.round((pronunciationScore + fluencyScore + relevanceScore) / 3);
 
   return {
