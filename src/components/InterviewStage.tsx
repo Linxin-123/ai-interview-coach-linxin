@@ -1,3 +1,5 @@
+// The interview screen. Contains all the speech machinery: speaking the question, listening to the answer, and measuring confidence and duration.
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Question, Interviewer } from '../types';
 import { Volume2, Mic, Square, SkipForward, RotateCcw, Video, VideoOff, HelpCircle, Eye, EyeOff } from 'lucide-react';
@@ -21,6 +23,8 @@ export default function InterviewStage({
   interviewer,
   voiceName,
   onAnswerSubmitted,
+  
+  // State and refs- Seven state variables that redraw the screen, and four refs that do not.
 }: InterviewStageProps) {
   const [phase, setPhase] = useState<'asking' | 'ready' | 'answering'>('asking');
   const [transcript, setTranscript] = useState('');
@@ -34,7 +38,8 @@ export default function InterviewStage({
   const durationIntervalRef = useRef<any>(null);
   const userVideoRef = useRef<HTMLVideoElement>(null);
   const confRef = useRef<{ sum: number; count: number }>({ sum: 0, count: 0 });
-
+  
+// Setup effect — runs on every new question  Resets everything and builds a fresh speech recogniser each time the question changes.
   useEffect(() => {
     setPhase('asking');
     setTranscript('');
@@ -86,7 +91,8 @@ export default function InterviewStage({
     window.speechSynthesis.cancel();
     setPhase('asking');
     if (recognitionRef.current) { try { recognitionRef.current.stop(); } catch {} }
-
+    
+// speakQuestion - Makes the coach read the question aloud in the assigned voice.
     const u = new SpeechSynthesisUtterance(question.text);
     if (voiceName) {
       const match = window.speechSynthesis.getVoices().find(v => v.name === voiceName);
@@ -97,7 +103,7 @@ export default function InterviewStage({
     u.onerror = () => setPhase('ready');
     window.speechSynthesis.speak(u);
   };
-
+// Start, stop and skip - The three buttons: begin recording, finish and continue, or skip.
   const handleStartAnswering = () => {
     setPhase('answering'); setTranscript(''); setSpeakDuration(0);
     confRef.current = { sum: 0, count: 0 };
@@ -121,7 +127,8 @@ export default function InterviewStage({
   const handleSkipQuestion = () => { stopAll(); onAnswerSubmitted("Skipped", 0, 0); };
 
   const speaking = phase === 'asking';
-
+  
+// The render Draws the screen, showing different controls depending on the phase.
   return (
     <div className="max-w-4xl mx-auto px-4 py-2 space-y-6 animate-fade-in">
 
