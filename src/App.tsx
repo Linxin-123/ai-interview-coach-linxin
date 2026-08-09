@@ -10,13 +10,14 @@ import { Briefcase, Sparkles, Loader2, Award } from 'lucide-react';
 
 const DATA_URL = `${import.meta.env.BASE_URL}interview-data.json`;
 
+// The state declarations - Four variables that hold the entire state of the application.
 export default function App() {
   const [step, setStep] = useState<'welcome' | 'interview' | 'loading_evaluation' | 'report'>('welcome');
   const [data, setData] = useState<InterviewData | null>(null);
   const [dataError, setDataError] = useState<string>('');
   const [session, setSession] = useState<InterviewSession | null>(null);
 
-  // Load the editable question bank at runtime (edit public/interview-data.json -> just refresh)
+  // Load the question bank (useEffect) - Downloads interview-data.json once, after the first render.
   useEffect(() => {
     fetch(DATA_URL)
       .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
@@ -24,6 +25,7 @@ export default function App() {
       .catch(() => setDataError('Could not load interview-data.json. Keep it in the public/ folder.'));
   }, []);
 
+  // handleStartInterview — filter and shuffle
   const handleStartInterview = (
     selectedRole: JobRole,
     interviewer: Interviewer,
@@ -57,6 +59,7 @@ export default function App() {
     setStep('interview');
   };
 
+  // handleAnswerSubmitted — the AI-or-local decision 
   const handleAnswerSubmitted = async (userAnswer: string, speakDurationSec: number, confidence: number) => {
     if (!session) return;
     const currentAnswerObj = { question: session.questions[session.currentQuestionIndex], speakDurationSec, userAnswer, confidence };
@@ -94,6 +97,7 @@ export default function App() {
     }
   };
 
+  // The render (return block) - Describes what appears on screen, choosing the right component for the current step.
   const handleRestart = () => { setSession(null); setStep('welcome'); };
 
   return (
