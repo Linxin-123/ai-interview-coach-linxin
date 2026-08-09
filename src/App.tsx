@@ -1,3 +1,4 @@
+// Imports and one constant - Pulls in React, the four screens, the scoring function, and builds the path to the question bank.
 import React, { useState, useEffect } from 'react';
 import { JobRole, InterviewSession, InterviewData, Interviewer, ComprehensiveEvaluation } from './types';
 import { buildLocalEvaluation } from './lib/scoring';
